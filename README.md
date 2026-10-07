@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wanna Space
 
-## Getting Started
+A personal space for your notes, tasks, time, plans, and everything that inspires you.
+One space, six rooms: **Today, Tasks, Planner, Notes, Time, Vault**.
 
-First, run the development server:
+> Status: Phase 0 (foundation) complete. See [docs/product/roadmap.md](docs/product/roadmap.md).
+
+## Getting started
+
+Requirements: Node 20.9+ and pnpm 11.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Script           | What it does                                            |
+| ---------------- | ------------------------------------------------------- |
+| `pnpm dev`       | Dev server (Turbopack)                                  |
+| `pnpm build`     | Production build                                        |
+| `pnpm typecheck` | Generate route types + `tsc --noEmit`                   |
+| `pnpm lint`      | ESLint                                                  |
+| `pnpm format`    | Prettier (with Tailwind class sorting)                  |
+| `pnpm check`     | typecheck + lint + format check — run before committing |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where things are
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app` — routes (`(marketing)`, `(app)` rooms, `/design` reference)
+- `src/features` — domain code per room
+- `src/components` — shared UI primitives and app shell
+- `src/styles/tokens.css` — design tokens
+- `docs/` — product, architecture, ADRs, design system ([index](docs/README.md))

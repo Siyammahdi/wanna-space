@@ -1,0 +1,169 @@
+/*
+ * Wanna Space design tokens.
+ * Raw values live here as CSS variables; globals.css maps them into Tailwind's theme.
+ * Every color is OKLCH so lightness stays perceptually even across hues.
+ * Documented in docs/design/design-system.md — update both together.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces: warm paper, layered from sunken to raised */
+  --canvas: oklch(0.972 0.007 80);
+  --surface: oklch(0.988 0.005 80);
+  --surface-raised: oklch(0.997 0.003 80);
+  --surface-sunken: oklch(0.951 0.009 78);
+  --surface-hover: oklch(0.938 0.01 76);
+  --overlay: oklch(0.22 0.012 60 / 0.32);
+
+  /* Ink: warm near-black, never pure #000 */
+  --ink: oklch(0.235 0.012 60);
+  --ink-muted: oklch(0.46 0.013 65);
+  --ink-subtle: oklch(0.61 0.011 70);
+  --ink-faint: oklch(0.74 0.009 72);
+  --ink-inverse: oklch(0.975 0.006 80);
+
+  /* Lines */
+  --line: oklch(0.905 0.01 76);
+  --line-strong: oklch(0.845 0.012 74);
+
+  /* Brand accent "Ember": used sparingly — focus, now-markers, selection, brand */
+  --accent: oklch(0.585 0.148 42);
+  --accent-hover: oklch(0.54 0.148 40);
+  --accent-soft: oklch(0.94 0.035 50);
+  --accent-ink: oklch(0.42 0.11 40);
+  --accent-contrast: oklch(0.985 0.01 60);
+
+  /* Feedback */
+  --success: oklch(0.56 0.1 150);
+  --success-soft: oklch(0.94 0.035 150);
+  --warning: oklch(0.68 0.13 75);
+  --warning-soft: oklch(0.95 0.045 85);
+  --danger: oklch(0.55 0.17 27);
+  --danger-soft: oklch(0.94 0.035 25);
+
+  /* Rooms: one muted hue per module, same lightness/chroma so they sit together */
+  --room-today: oklch(0.585 0.148 42);
+  --room-today-soft: oklch(0.94 0.035 50);
+  --room-tasks: oklch(0.57 0.11 28);
+  --room-tasks-soft: oklch(0.94 0.03 30);
+  --room-notes: oklch(0.56 0.07 150);
+  --room-notes-soft: oklch(0.945 0.025 150);
+  --room-planner: oklch(0.62 0.1 78);
+  --room-planner-soft: oklch(0.95 0.035 85);
+  --room-time: oklch(0.52 0.09 265);
+  --room-time-soft: oklch(0.945 0.022 265);
+  --room-vault: oklch(0.53 0.09 330);
+  --room-vault-soft: oklch(0.945 0.025 330);
+
+  /* Elevation: shadows tinted warm so they read as depth, not dirt */
+  --shadow-color: 40 20% 20%;
+  --elevation-xs: 0 1px 1px hsl(var(--shadow-color) / 0.05);
+  --elevation-sm:
+    0 1px 2px hsl(var(--shadow-color) / 0.06), 0 1px 1px hsl(var(--shadow-color) / 0.04);
+  --elevation-md:
+    0 1px 2px hsl(var(--shadow-color) / 0.05), 0 4px 10px -2px hsl(var(--shadow-color) / 0.08);
+  --elevation-lg:
+    0 2px 4px hsl(var(--shadow-color) / 0.04), 0 12px 28px -6px hsl(var(--shadow-color) / 0.14);
+  --elevation-xl:
+    0 4px 8px hsl(var(--shadow-color) / 0.04), 0 24px 56px -12px hsl(var(--shadow-color) / 0.22);
+
+  /* Motion */
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --motion-ease-spring: linear(
+    0,
+    0.009,
+    0.035 2.1%,
+    0.141,
+    0.281 6.7%,
+    0.723 12.9%,
+    0.938 16.7%,
+    1.017,
+    1.077,
+    1.121,
+    1.149 24.3%,
+    1.159,
+    1.163,
+    1.161,
+    1.154 29.9%,
+    1.129 32.8%,
+    1.051 39.6%,
+    1.017 43.1%,
+    0.991,
+    0.977 51%,
+    0.974 53.8%,
+    0.975 57.1%,
+    0.997 69.8%,
+    1.003 76.9%,
+    1.004 83.8%,
+    1
+  );
+  --duration-instant: 90ms;
+  --duration-fast: 160ms;
+  --duration-base: 240ms;
+  --duration-slow: 420ms;
+
+  /* Layout */
+  --sidebar-width: 248px;
+  --sidebar-width-collapsed: 64px;
+  --topbar-height: 56px;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Warm charcoal, not blue-black */
+  --canvas: oklch(0.175 0.006 60);
+  --surface: oklch(0.205 0.007 60);
+  --surface-raised: oklch(0.24 0.008 60);
+  --surface-sunken: oklch(0.155 0.006 60);
+  --surface-hover: oklch(0.265 0.009 60);
+  --overlay: oklch(0.08 0.005 60 / 0.6);
+
+  --ink: oklch(0.93 0.009 80);
+  --ink-muted: oklch(0.73 0.011 75);
+  --ink-subtle: oklch(0.58 0.011 70);
+  --ink-faint: oklch(0.44 0.01 68);
+  --ink-inverse: oklch(0.2 0.008 60);
+
+  --line: oklch(0.29 0.008 60);
+  --line-strong: oklch(0.36 0.01 60);
+
+  --accent: oklch(0.7 0.14 46);
+  --accent-hover: oklch(0.75 0.13 48);
+  --accent-soft: oklch(0.3 0.06 42);
+  --accent-ink: oklch(0.8 0.1 50);
+  --accent-contrast: oklch(0.18 0.02 40);
+
+  --success: oklch(0.7 0.11 150);
+  --success-soft: oklch(0.3 0.045 150);
+  --warning: oklch(0.78 0.12 80);
+  --warning-soft: oklch(0.32 0.05 80);
+  --danger: oklch(0.68 0.16 27);
+  --danger-soft: oklch(0.3 0.06 25);
+
+  --room-today: oklch(0.7 0.14 46);
+  --room-today-soft: oklch(0.3 0.06 42);
+  --room-tasks: oklch(0.7 0.11 30);
+  --room-tasks-soft: oklch(0.29 0.045 28);
+  --room-notes: oklch(0.72 0.08 150);
+  --room-notes-soft: oklch(0.29 0.035 150);
+  --room-planner: oklch(0.77 0.1 82);
+  --room-planner-soft: oklch(0.31 0.04 80);
+  --room-time: oklch(0.7 0.09 265);
+  --room-time-soft: oklch(0.29 0.04 265);
+  --room-vault: oklch(0.71 0.09 330);
+  --room-vault-soft: oklch(0.29 0.04 330);
+
+  --shadow-color: 30 30% 2%;
+  --elevation-xs: 0 1px 1px hsl(var(--shadow-color) / 0.3);
+  --elevation-sm:
+    0 1px 2px hsl(var(--shadow-color) / 0.35), 0 1px 1px hsl(var(--shadow-color) / 0.25);
+  --elevation-md:
+    0 1px 2px hsl(var(--shadow-color) / 0.3), 0 4px 10px -2px hsl(var(--shadow-color) / 0.4);
+  --elevation-lg:
+    0 2px 4px hsl(var(--shadow-color) / 0.3), 0 12px 28px -6px hsl(var(--shadow-color) / 0.5);
+  --elevation-xl:
+    0 4px 8px hsl(var(--shadow-color) / 0.3), 0 24px 56px -12px hsl(var(--shadow-color) / 0.6);
+}
