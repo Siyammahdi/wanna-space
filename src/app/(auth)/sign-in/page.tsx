@@ -15,7 +15,7 @@ export default async function SignInPage({ searchParams }: PageProps<"/sign-in">
     <SignInForm
       next={safeNext(typeof next === "string" ? next : undefined)}
       googleEnabled={features.google}
-      devMailbox={!features.email}
+      devMailbox={features.devMailbox}
       initialError={error ? "Google sign-in didn’t complete. Please try again." : undefined}
     />
   );

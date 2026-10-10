@@ -14,7 +14,7 @@ export default async function VerifyEmailPage({ searchParams }: PageProps<"/veri
   await redirectIfSignedIn();
   const { error } = await searchParams;
 
-  if (error) return <ResendVerificationForm devMailbox={!features.email} />;
+  if (error) return <ResendVerificationForm devMailbox={features.devMailbox} />;
 
   return (
     <>

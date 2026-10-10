@@ -60,5 +60,7 @@ export const cloudinaryConfig = cloudinaryCredentials();
 export const features = {
   google: Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET),
   email: Boolean(env.RESEND_API_KEY),
+  /** Development without an email provider: links are printed to the `pnpm dev` terminal. */
+  devMailbox: !env.RESEND_API_KEY && env.NODE_ENV === "development",
   uploads: cloudinaryConfig !== null,
 };

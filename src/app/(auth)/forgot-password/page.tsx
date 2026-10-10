@@ -8,5 +8,5 @@ export const metadata: Metadata = { title: "Reset your password" };
 
 export default async function ForgotPasswordPage() {
   await redirectIfSignedIn();
-  return <ForgotPasswordForm devMailbox={!features.email} />;
+  return <ForgotPasswordForm devMailbox={features.devMailbox} />;
 }

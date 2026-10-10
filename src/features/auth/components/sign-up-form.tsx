@@ -18,9 +18,14 @@ import { AuthHeading } from "./auth-heading";
 import { CheckInbox } from "./check-inbox";
 import { GoogleButton, OrDivider } from "./google-button";
 
-type Props = { googleEnabled: boolean; devMailbox: boolean };
+type Props = {
+  googleEnabled: boolean;
+  devMailbox: boolean;
+  /** False when confirmation emails can't be sent, so a new account couldn't be verified. */
+  emailReady: boolean;
+};
 
-export function SignUpForm({ googleEnabled, devMailbox }: Props) {
+export function SignUpForm({ googleEnabled, devMailbox, emailReady }: Props) {
   const [pending, startTransition] = useTransition();
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string>();
@@ -73,6 +78,12 @@ export function SignUpForm({ googleEnabled, devMailbox }: Props) {
 
           <form action={onSubmit} noValidate className="flex flex-col gap-5">
             {formError && <Alert tone="danger">{formError}</Alert>}
+            {!emailReady && (
+              <Alert>
+                New accounts are paused for a moment while we set up confirmation emails. Please
+                check back soon.
+              </Alert>
+            )}
 
             <Field id="name" label="Name" error={errors.name}>
               <Input
@@ -110,7 +121,12 @@ export function SignUpForm({ googleEnabled, devMailbox }: Props) {
               />
             </Field>
 
-            <Button type="submit" size="lg" className="mt-1 w-full" disabled={pending}>
+            <Button
+              type="submit"
+              size="lg"
+              className="mt-1 w-full"
+              disabled={pending || !emailReady}
+            >
               {pending && <Spinner />}
               Create account
             </Button>

@@ -8,5 +8,11 @@ export const metadata: Metadata = { title: "Create your space" };
 
 export default async function SignUpPage() {
   await redirectIfSignedIn();
-  return <SignUpForm googleEnabled={features.google} devMailbox={!features.email} />;
+  return (
+    <SignUpForm
+      googleEnabled={features.google}
+      devMailbox={features.devMailbox}
+      emailReady={features.email || features.devMailbox}
+    />
+  );
 }
