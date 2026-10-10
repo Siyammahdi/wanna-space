@@ -8,7 +8,7 @@ same PR as the code they describe.
 | Product      | [product/vision.md](product/vision.md)                   | What we're building, for whom, and why    |
 | Product      | [product/roadmap.md](product/roadmap.md)                 | Phases, scope, and current status         |
 | Architecture | [architecture/overview.md](architecture/overview.md)     | Stack, folder layout, layers, conventions |
-| Architecture | [architecture/data-model.md](architecture/data-model.md) | Entities and relationships (draft)        |
+| Architecture | [architecture/data-model.md](architecture/data-model.md) | Live tables and drafted room entities     |
 | Architecture | [architecture/decisions/](architecture/decisions/)       | ADRs — why each major decision was made   |
 | Design       | [design/design-system.md](design/design-system.md)       | Tokens, type, color, motion, components   |
 

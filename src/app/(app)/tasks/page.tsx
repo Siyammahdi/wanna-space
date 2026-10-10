@@ -1,24 +1,35 @@
 import type { Metadata } from "next";
 
-import { RoomTransition } from "@/components/motion/room-transition";
-import { RoomHeader } from "@/components/shell/room-header";
-import { RoomPlaceholder } from "@/components/shell/room-placeholder";
+import { TaskBoard } from "@/features/tasks/components/task-board";
+import type { TaskScope } from "@/features/tasks/schema";
+import {
+  listOpenTasks,
+  listProjects,
+  listRecentlyCompleted,
+} from "@/features/tasks/server/queries";
+import { getUserToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Tasks" };
 
-export default function TasksPage() {
+const scope: TaskScope = { kind: "all" };
+
+export default async function TasksPage({ searchParams }: PageProps<"/tasks">) {
+  const [open, completed, projects, today, { task }] = await Promise.all([
+    listOpenTasks(scope),
+    listRecentlyCompleted(scope),
+    listProjects(),
+    getUserToday(),
+    searchParams,
+  ]);
+
   return (
-    <RoomTransition>
-      <RoomHeader roomId="tasks" />
-      <RoomPlaceholder
-        roomId="tasks"
-        plans={[
-          "Quick capture from anywhere with natural dates (“call mom fri 5pm”)",
-          "Inbox, Today, Upcoming and project lists",
-          "Priorities, tags, subtasks and recurring tasks",
-          "Keyboard-first: create, complete and reorder without the mouse",
-        ]}
-      />
-    </RoomTransition>
+    <TaskBoard
+      open={open}
+      completed={completed}
+      projects={projects}
+      scope={scope}
+      today={today}
+      openTaskId={typeof task === "string" ? task : null}
+    />
   );
 }

@@ -18,7 +18,9 @@ export function RoomPlaceholder({ roomId, plans }: { roomId: RoomId; plans: stri
       />
       <div className="relative max-w-lg">
         <Icon className={cn("mb-5 size-8", room.tone.text)} strokeWidth={1.5} />
-        <h2 className="font-display text-2xl tracking-tight text-ink">This room is being built.</h2>
+        <h2 className="font-heading text-2xl font-semibold tracking-tight text-ink">
+          This room is being built.
+        </h2>
         <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">{room.description}</p>
         <ul className="mt-6 flex flex-col gap-2.5">
           {plans.map((plan) => (

@@ -10,23 +10,24 @@ import { spring } from "@/lib/motion";
 
 export function RoomGrid() {
   return (
-    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {rooms.map((room, i) => {
         const Icon = room.icon;
         return (
           <li
             key={room.id}
-            className="animate-rise"
-            style={{ animationDelay: `${350 + i * 70}ms` }}
+            className={cn("scroll-rise", i === 0 && "sm:col-span-2")}
+            style={{ "--rise-from": `${(i % 4) * 6}%` } as React.CSSProperties}
           >
             <motion.div
+              className="h-full"
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.98 }}
               transition={spring.snappy}
             >
               <Link
                 href={room.href}
-                className="group relative flex h-full flex-col gap-5 overflow-hidden rounded-xl border border-line bg-surface-raised/80 p-5 shadow-sm backdrop-blur-sm transition-shadow duration-300 hover:shadow-lg"
+                className="group relative flex h-full flex-col gap-5 overflow-hidden rounded-xl bg-surface-raised/80 p-5 backdrop-blur-sm transition-shadow duration-300 hover:shadow-lg"
               >
                 <div
                   aria-hidden
@@ -51,7 +52,9 @@ export function RoomGrid() {
                   )}
                 </div>
                 <div className="relative">
-                  <h3 className="font-display text-xl tracking-tight text-ink">{room.label}</h3>
+                  <h3 className="font-heading text-xl font-semibold tracking-tight text-ink">
+                    {room.label}
+                  </h3>
                   <p className="mt-1 text-sm leading-relaxed text-ink-muted">{room.description}</p>
                 </div>
               </Link>

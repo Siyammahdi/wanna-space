@@ -12,7 +12,7 @@ timer, bookmarks, a screenshot folder, a Figma page of "inspo". Each is fine alo
 they fragment attention and nothing connects. A task can't point at the reference that
 inspired it; the week's plan can't see where time actually went.
 
-## The idea: one space, six rooms
+## The idea: one space, seven rooms
 
 The product is a single **space** with **rooms**. Each room is a focused tool, and every item
 can link to items in other rooms.
@@ -21,6 +21,7 @@ can link to items in other rooms.
 | ----------- | --------------------------------------------------------------------------- |
 | **Today**   | The front door: what's due, what's scheduled, focus time — one calm view    |
 | **Tasks**   | Capture fast, organize lightly, finish with satisfaction                    |
+| **Orbit**   | Run a project as a board: stages, a brief, a target date, and its health    |
 | **Planner** | Shape the week: drag tasks onto days, block time                            |
 | **Notes**   | Notion-style pages with a block editor                                      |
 | **Time**    | Focus sessions and time tracking that feed the planner                      |

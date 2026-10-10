@@ -25,6 +25,14 @@ Non-negotiables:
   (CSS). Never gate first paint on JavaScript.
 - Server Components by default; `"use client"` at the smallest leaf.
 - `components/` must not import from `features/`.
+- Design: no `shadow-xs`/`shadow-sm` (they don't exist), no decorative borders — separate
+  with surface tones. No reddish hues outside `danger`. Headings `font-heading`, body `font-sans`.
+- Data: every domain query goes through `src/server/dal.ts` (`requireUser` / `requireSpace`)
+  and is scoped by `space_id`. `proxy.ts` is never an authorization check.
+- Database changes: edit `src/server/db/schema/` → `pnpm db:generate` → review SQL →
+  `pnpm db:migrate`. Never run destructive SQL or touch the `production` branch without
+  explicit approval.
+- Never commit `.env.local` or secrets; new env vars go in `src/server/env.ts` and `.env.example`.
 - Update the relevant doc (and roadmap checkboxes) in the same change. Record significant
   decisions as a new ADR in `docs/architecture/decisions/`.
 - Run `pnpm check` before finishing.

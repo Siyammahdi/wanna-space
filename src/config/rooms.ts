@@ -3,6 +3,7 @@ import {
   CalendarDays,
   ListChecks,
   NotebookPen,
+  Orbit,
   Sun,
   Timer,
   type LucideIcon,
@@ -13,7 +14,10 @@ import {
  * source of truth for navigation, theming hue, and copy — add a module here
  * and it appears in the sidebar, landing page, and design reference.
  */
-export type RoomId = "today" | "tasks" | "planner" | "notes" | "time" | "vault";
+export const ROOM_IDS = ["today", "tasks", "orbit", "planner", "notes", "time", "vault"] as const;
+export type RoomId = (typeof ROOM_IDS)[number];
+
+export const isRoomId = (id: string): id is RoomId => (ROOM_IDS as readonly string[]).includes(id);
 
 export type Room = {
   id: RoomId;
@@ -59,6 +63,22 @@ export const rooms: readonly Room[] = [
     status: "building",
   },
   {
+    id: "orbit",
+    label: "Orbit",
+    href: "/orbit",
+    icon: Orbit,
+    tagline: "Run projects end to end",
+    description:
+      "Turn any tasks into a project: stages you shape, a board you drag, progress you can see from orbit.",
+    tone: {
+      text: "text-room-orbit",
+      bg: "bg-room-orbit",
+      soft: "bg-room-orbit-soft",
+      ring: "ring-room-orbit/30",
+    },
+    status: "building",
+  },
+  {
     id: "planner",
     label: "Planner",
     href: "/planner",
@@ -71,7 +91,7 @@ export const rooms: readonly Room[] = [
       soft: "bg-room-planner-soft",
       ring: "ring-room-planner/30",
     },
-    status: "planned",
+    status: "building",
   },
   {
     id: "notes",
@@ -86,7 +106,7 @@ export const rooms: readonly Room[] = [
       soft: "bg-room-notes-soft",
       ring: "ring-room-notes/30",
     },
-    status: "planned",
+    status: "building",
   },
   {
     id: "time",
@@ -101,7 +121,7 @@ export const rooms: readonly Room[] = [
       soft: "bg-room-time-soft",
       ring: "ring-room-time/30",
     },
-    status: "planned",
+    status: "building",
   },
   {
     id: "vault",
@@ -117,7 +137,7 @@ export const rooms: readonly Room[] = [
       soft: "bg-room-vault-soft",
       ring: "ring-room-vault/30",
     },
-    status: "planned",
+    status: "building",
   },
 ];
 

@@ -20,7 +20,7 @@ export function MotionLab() {
 
   return (
     <div className="grid gap-4 md:grid-cols-[1fr_280px]">
-      <div className="rounded-xl border border-line bg-surface-raised p-5">
+      <div className="rounded-xl bg-surface-raised p-5">
         <div className="mb-4 flex items-center justify-between">
           <p className="text-sm font-medium text-ink">Spring presets</p>
           <Button size="sm" variant="secondary" onClick={() => setOn((v) => !v)}>
@@ -36,7 +36,7 @@ export function MotionLab() {
               </div>
               <div className="relative h-8 flex-1 rounded-md bg-surface-sunken">
                 <motion.span
-                  className="absolute top-1 left-1 size-6 rounded-sm bg-accent shadow-sm"
+                  className="absolute top-1 left-1 size-6 rounded-sm bg-accent"
                   animate={{ left: on ? "calc(100% - 28px)" : "4px" }}
                   transition={spring[name]}
                 />
@@ -46,7 +46,7 @@ export function MotionLab() {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center gap-3 rounded-xl border border-line bg-surface-raised p-5">
+      <div className="flex flex-col justify-center gap-3 rounded-xl bg-surface-raised p-5">
         <p className="text-sm font-medium text-ink">Signature interaction</p>
         <div className="flex items-center gap-3 text-[15px]">
           <TaskCheck label="Ship the foundation" checked={checked} onCheckedChange={setChecked} />

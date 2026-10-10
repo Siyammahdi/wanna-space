@@ -31,7 +31,7 @@ export function RoomHeader({
         </span>
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="font-display text-[34px] leading-tight font-normal tracking-tight text-ink">
+            <h1 className="font-heading text-[34px] leading-tight font-semibold tracking-[-0.03em] text-ink">
               {title ?? room.label}
             </h1>
             {room.status === "planned" && <Badge>Planned</Badge>}

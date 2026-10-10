@@ -1,63 +1,60 @@
 import type { Metadata } from "next";
-import { CalendarDays, ListChecks, Timer } from "lucide-react";
 
-import { Reveal } from "@/components/motion/reveal";
 import { RoomTransition } from "@/components/motion/room-transition";
-import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/cn";
+import { listRecentPages } from "@/features/notes/server/queries";
+import { listOrbitProjects } from "@/features/orbit/server/queries";
+import {
+  countDueOn,
+  listProjects,
+  listTaskChoices,
+  listTodayTasks,
+} from "@/features/tasks/server/queries";
+import { listEntries } from "@/features/time/server/queries";
+import { getDayPlan } from "@/features/today/server/queries";
+import { listRecentVaultItems } from "@/features/vault/server/queries";
+import { addDays } from "@/lib/dates";
+import { requireUser } from "@/server/dal";
+import { getUserToday } from "@/server/today";
 
-import { GettingStarted } from "./_components/getting-started";
-import { Greeting } from "./_components/greeting";
+import { ProjectsCard } from "./_components/projects-card";
+import { NotesCard, VaultCard } from "./_components/room-cards";
+import { TodayBoard } from "./_components/today-board";
 
 export const metadata: Metadata = { title: "Today" };
 
-const lanes = [
-  {
-    title: "Due today",
-    empty: "Nothing due. Tasks you schedule for today will gather here.",
-    icon: ListChecks,
-    tone: "text-room-tasks bg-room-tasks-soft",
-  },
-  {
-    title: "Schedule",
-    empty: "Your time blocks and events for the day will line up here.",
-    icon: CalendarDays,
-    tone: "text-room-planner bg-room-planner-soft",
-  },
-  {
-    title: "Focus",
-    empty: "Start a focus session and watch your hours add up.",
-    icon: Timer,
-    tone: "text-room-time bg-room-time-soft",
-  },
-];
+export default async function TodayPage() {
+  const [user, today] = await Promise.all([requireUser(), getUserToday()]);
+  const plan = await getDayPlan(today);
+  const [tasks, projects, choices, entries, tomorrow, orbit, pages, saves] = await Promise.all([
+    listTodayTasks(today, plan.focus),
+    listProjects(),
+    listTaskChoices({ topLevel: true }),
+    listEntries(today, today),
+    countDueOn(addDays(today, 1)),
+    listOrbitProjects(today),
+    listRecentPages(3),
+    listRecentVaultItems(3),
+  ]);
 
-export default function TodayPage() {
   return (
     <RoomTransition>
-      <div className="flex flex-col gap-8">
-        <Reveal>
-          <Greeting />
-        </Reveal>
-
-        <Reveal order={1}>
-          <GettingStarted />
-        </Reveal>
-
-        <Reveal order={2} className="grid gap-4 md:grid-cols-3">
-          {lanes.map(({ title, empty, icon: Icon, tone }) => (
-            <Card key={title} className="flex flex-col gap-4 p-5">
-              <div className="flex items-center gap-2.5">
-                <span className={cn("flex size-7 items-center justify-center rounded-sm", tone)}>
-                  <Icon className="size-4" />
-                </span>
-                <h2 className="text-sm font-semibold text-ink">{title}</h2>
-              </div>
-              <p className="text-[13px] leading-relaxed text-ink-subtle">{empty}</p>
-            </Card>
-          ))}
-        </Reveal>
-      </div>
+      <TodayBoard
+        name={user.name}
+        today={today}
+        tasks={tasks}
+        projects={projects}
+        choices={choices}
+        plan={plan}
+        entries={entries}
+        tomorrow={tomorrow}
+        rooms={
+          <>
+            <ProjectsCard projects={orbit} today={today} />
+            <NotesCard pages={pages} />
+            <VaultCard saves={saves} />
+          </>
+        }
+      />
     </RoomTransition>
   );
 }

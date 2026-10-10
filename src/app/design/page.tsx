@@ -63,12 +63,12 @@ export default function DesignPage() {
         <p className="mb-3 text-[12px] font-medium tracking-[0.12em] text-ink-subtle uppercase">
           Design language · v0.1
         </p>
-        <h1 className="font-display text-5xl font-light tracking-tight text-ink">
-          Calm at rest, <em className="text-accent italic">alive</em> in motion.
+        <h1 className="font-heading text-5xl font-medium tracking-[-0.04em] text-ink">
+          Calm at rest, <span className="text-accent">alive</span> in motion.
         </h1>
         <p className="mt-4 text-[16px] leading-relaxed text-ink-muted">
-          Warm paper surfaces, serious ink, one ember accent used sparingly, and a muted hue for
-          each room. Source of truth:{" "}
+          Frosted Fern: misty surfaces, deep green ink, one fern accent used sparingly, and a muted
+          hue for each room. Source of truth:{" "}
           <code className="font-mono text-sm">src/styles/tokens.css</code> and{" "}
           <code className="font-mono text-sm">docs/design/design-system.md</code>.
         </p>
@@ -92,7 +92,7 @@ export default function DesignPage() {
               {rooms.map((room) => {
                 const Icon = room.icon;
                 return (
-                  <div key={room.id} className="overflow-hidden rounded-lg border border-line">
+                  <div key={room.id} className="overflow-hidden rounded-lg">
                     <div className={cn("flex h-16 items-center justify-center", room.tone.soft)}>
                       <Icon className={cn("size-6", room.tone.text)} strokeWidth={1.75} />
                     </div>
@@ -110,16 +110,18 @@ export default function DesignPage() {
 
       <Section title="Typography">
         <div className="flex flex-col gap-6">
-          <TypeRow label="Display · Fraunces (SOFT 100)">
-            <p className="font-display text-5xl font-light tracking-tight">A quiet room</p>
+          <TypeRow label="Heading · Bricolage Grotesque (brand)">
+            <p className="font-heading text-5xl font-medium tracking-[-0.04em]">A quiet room</p>
           </TypeRow>
-          <TypeRow label="Heading · Fraunces">
-            <p className="font-display text-[28px] tracking-tight">Plan the week ahead</p>
+          <TypeRow label="Heading · Bricolage Grotesque">
+            <p className="font-heading text-[28px] font-semibold tracking-[-0.03em]">
+              Plan the week ahead
+            </p>
           </TypeRow>
-          <TypeRow label="Body · Geist">
+          <TypeRow label="Body · Figtree">
             <p className="max-w-xl text-[15px] leading-relaxed text-ink-muted">
-              Interface text is set in Geist for clarity at small sizes. Serif is reserved for
-              moments that should feel personal: greetings, page titles, empty states.
+              Interface text is set in Figtree: warm, open and clear at small sizes. Bricolage
+              Grotesque is the brand voice for headings, greetings and empty states.
             </p>
           </TypeRow>
           <TypeRow label="Data · Geist Mono">
@@ -153,19 +155,16 @@ export default function DesignPage() {
               <Kbd>K</Kbd>
             </span>
           </div>
-          <div className="grid gap-3 sm:grid-cols-5">
-            {(["xs", "sm", "md", "lg", "xl"] as const).map((level) => (
+          <div className="grid gap-4 sm:grid-cols-4">
+            <div className="flex h-24 items-end rounded-xl bg-surface-raised p-3 font-mono text-[11px] text-ink-subtle">
+              resting · tone only
+            </div>
+            {(["md", "lg", "xl"] as const).map((level) => (
               <div
                 key={level}
                 className={cn(
-                  "flex h-20 items-end rounded-lg bg-surface-raised p-3 font-mono text-[11px] text-ink-subtle",
-                  {
-                    xs: "shadow-xs",
-                    sm: "shadow-sm",
-                    md: "shadow-md",
-                    lg: "shadow-lg",
-                    xl: "shadow-xl",
-                  }[level],
+                  "flex h-24 items-end rounded-xl bg-surface-raised p-3 font-mono text-[11px] text-ink-subtle",
+                  { md: "shadow-md", lg: "shadow-lg", xl: "shadow-xl" }[level],
                 )}
               >
                 shadow-{level}
@@ -184,8 +183,8 @@ export default function DesignPage() {
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="border-t border-line py-12">
-      <h2 className="mb-8 font-display text-2xl tracking-tight text-ink">{title}</h2>
+    <section className="py-12">
+      <h2 className="mb-8 font-heading text-2xl font-semibold tracking-tight text-ink">{title}</h2>
       {children}
     </section>
   );
@@ -193,8 +192,8 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 
 function Swatch({ name, className }: { name: string; className: string }) {
   return (
-    <Card className="overflow-hidden shadow-xs">
-      <div className={cn("h-16 border-b border-line", className)} />
+    <Card className="overflow-hidden">
+      <div className={cn("h-16", className)} />
       <p className="px-3 py-2 font-mono text-[11px] text-ink-muted">{name}</p>
     </Card>
   );

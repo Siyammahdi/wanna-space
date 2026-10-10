@@ -44,7 +44,7 @@ export function TaskCheck({ checked, onCheckedChange, label, className }: TaskCh
           strokeLinecap="round"
           strokeLinejoin="round"
           initial={false}
-          animate={{ pathLength: checked ? 1 : 0 }}
+          animate={{ pathLength: checked ? 1 : 0, opacity: checked ? 1 : 0 }}
           transition={{ duration: 0.28, delay: checked ? 0.08 : 0, ease: "easeOut" }}
         />
       </svg>

@@ -25,13 +25,16 @@ function subscribe(onChange: () => void) {
   };
 }
 
-function setPreference(value: ThemePreference) {
+export function setThemePreference(value: ThemePreference) {
   applyTheme(value);
   window.dispatchEvent(new Event(THEME_EVENT));
 }
 
+export const useThemePreference = () =>
+  useSyncExternalStore(subscribe, readThemePreference, () => "system" as const);
+
 export function ThemeSwitcher({ className }: { className?: string }) {
-  const preference = useSyncExternalStore(subscribe, readThemePreference, () => "system" as const);
+  const preference = useThemePreference();
 
   useEffect(() => {
     if (preference !== "system") return;
@@ -45,7 +48,7 @@ export function ThemeSwitcher({ className }: { className?: string }) {
     <div
       role="radiogroup"
       aria-label="Theme"
-      className={cn("flex items-center gap-0.5 rounded-md bg-surface-sunken p-0.5", className)}
+      className={cn("flex items-center gap-0.5 rounded-md bg-surface-hover/70 p-0.5", className)}
     >
       {options.map(({ value, label, icon: Icon }) => {
         const active = preference === value;
@@ -57,7 +60,7 @@ export function ThemeSwitcher({ className }: { className?: string }) {
             aria-checked={active}
             aria-label={label}
             title={label}
-            onClick={() => setPreference(value)}
+            onClick={() => setThemePreference(value)}
             className={cn(
               "relative flex h-7 flex-1 items-center justify-center rounded-sm transition-colors",
               active ? "text-ink" : "text-ink-subtle hover:text-ink-muted",
@@ -67,7 +70,7 @@ export function ThemeSwitcher({ className }: { className?: string }) {
               <motion.span
                 layoutId="theme-switcher-pill"
                 transition={spring.glide}
-                className="absolute inset-0 rounded-sm bg-surface-raised shadow-sm"
+                className="absolute inset-0 rounded-sm bg-surface-raised"
               />
             )}
             <Icon className="relative size-3.5" />
