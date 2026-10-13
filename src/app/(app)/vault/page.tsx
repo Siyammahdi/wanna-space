@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 
-import { Reveal } from "@/components/motion/reveal";
-import { RoomTransition } from "@/components/motion/room-transition";
 import { RoomHeader } from "@/components/shell/room-header";
 import { SaveBar } from "@/features/vault/components/save-bar";
 import { VaultBoard, VaultOverlays } from "@/features/vault/components/vault-board";
@@ -21,29 +19,21 @@ export default async function VaultPage({ searchParams }: PageProps<"/vault">) {
   ]);
 
   return (
-    <RoomTransition>
-      {/* Opts out of the app's reading width: a board wants the room. */}
-      <div data-wide>
-        <VaultProvider
-          initialItems={items}
-          initialCollections={collections}
-          initialFilters={filtersFromParams(params)}
-          uploadsEnabled={features.uploads}
-          linkedId={typeof params.item === "string" ? params.item : null}
-        >
-          <RoomHeader roomId="vault" />
-          <Reveal>
-            <SaveBar />
-          </Reveal>
-          <Reveal order={1}>
-            <VaultToolbar />
-          </Reveal>
-          <Reveal order={2}>
-            <VaultBoard limited={items.length >= VAULT_LIMIT} />
-          </Reveal>
-          <VaultOverlays />
-        </VaultProvider>
-      </div>
-    </RoomTransition>
+    // Opts out of the app's reading width: a board wants the room.
+    <div data-wide>
+      <VaultProvider
+        initialItems={items}
+        initialCollections={collections}
+        initialFilters={filtersFromParams(params)}
+        uploadsEnabled={features.uploads}
+        linkedId={typeof params.item === "string" ? params.item : null}
+      >
+        <RoomHeader roomId="vault" />
+        <SaveBar />
+        <VaultToolbar />
+        <VaultBoard limited={items.length >= VAULT_LIMIT} />
+        <VaultOverlays />
+      </VaultProvider>
+    </div>
   );
 }

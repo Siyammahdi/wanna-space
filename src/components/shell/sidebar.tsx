@@ -4,7 +4,7 @@ import { Plus, Search, Settings } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 
 import { Logo } from "@/components/brand/logo";
 import { ThemeSwitcher } from "@/components/theme/theme-switcher";
@@ -27,6 +27,19 @@ export const isActive = (href: string, pathname: string) =>
 export const shownRooms = (hidden: RoomId[], pathname: string) =>
   rooms.filter((room) => !hidden.includes(room.id) || isActive(room.href, pathname));
 
+/**
+ * Where the nav should point: the room a click is heading to, from the moment of
+ * the click, so the highlight never waits on the network. Falls back to the URL
+ * once it changes (or if the navigation goes somewhere else).
+ */
+export function useNavTarget() {
+  const pathname = usePathname();
+  const [pending, setPending] = useState<{ from: string; to: string } | null>(null);
+  const target = pending?.from === pathname ? pending.to : pathname;
+  const navigate = (to: string) => setPending({ from: pathname, to });
+  return { pathname, target, navigate };
+}
+
 export function Sidebar({
   account,
   timer,
@@ -35,7 +48,7 @@ export function Sidebar({
   /** The running focus timer (from the Time feature). */
   timer?: React.ReactNode;
 }) {
-  const pathname = usePathname();
+  const { pathname, target, navigate } = useNavTarget();
   const { hiddenRooms } = useSettings();
   const modKeyLabel = useSyncExternalStore(
     noSubscribe,
@@ -81,12 +94,13 @@ export function Sidebar({
 
       <nav className="flex flex-col gap-0.5">
         {shownRooms(hiddenRooms, pathname).map((room) => {
-          const active = isActive(room.href, pathname);
+          const active = isActive(room.href, target);
           const Icon = room.icon;
           return (
             <Link
               key={room.id}
               href={room.href}
+              onNavigate={() => navigate(room.href)}
               aria-current={active ? "page" : undefined}
               className={cn(
                 "group relative flex h-9 items-center gap-3 rounded-md px-2.5 text-sm transition-colors",

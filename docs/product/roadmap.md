@@ -292,6 +292,8 @@ Next:
 - [x] Global search across rooms (ADR 0020): one palette search over tasks (title and
       notes), pages (title and text) and the Vault, every word matching, with snippets
       and highlighted matches; results open in place
+- [x] Instant navigation (ADR 0021): prefetched room skeletons, data-free room layouts,
+      one query round per page, the nav highlight moves on click
 - [ ] Import (export of projects, stages, tasks, pages, time and the Vault is done)
 - [ ] Onboarding, PWA, accessibility audit, performance budget
 - [ ] Production hardening: rate limits, backups, monitoring, VPS deployment option

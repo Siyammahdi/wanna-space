@@ -2,7 +2,6 @@ import { FileText } from "lucide-react";
 import type { Metadata, Route } from "next";
 import Link from "next/link";
 
-import { Reveal } from "@/components/motion/reveal";
 import { RoomHeader } from "@/components/shell/room-header";
 import { Card } from "@/components/ui/card";
 import { EditedAt } from "@/features/notes/components/edited-at";
@@ -21,7 +20,7 @@ export default async function NotesPage() {
       <RoomHeader roomId="notes" actions={<NewPageButton size="sm" />} />
 
       {recent.length === 0 ? (
-        <Reveal>
+        <div>
           <Card className="relative overflow-hidden p-10">
             <div
               aria-hidden
@@ -40,7 +39,7 @@ export default async function NotesPage() {
               <NewPageButton className="mt-6">Write your first page</NewPageButton>
             </div>
           </Card>
-        </Reveal>
+        </div>
       ) : (
         <section aria-labelledby="recent-pages">
           <h2
@@ -50,9 +49,9 @@ export default async function NotesPage() {
             Recently edited
           </h2>
           <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {recent.map((page, i) => (
+            {recent.map((page) => (
               <li key={page.id}>
-                <Reveal order={Math.min(i, 6)} className="h-full">
+                <div className="h-full">
                   <Link
                     href={`/notes/${page.id}` as Route}
                     className="group flex h-full min-h-36 flex-col rounded-lg bg-surface p-4 transition-[background-color,transform] duration-200 hover:-translate-y-0.5 hover:bg-surface-raised active:translate-y-0"
@@ -68,7 +67,7 @@ export default async function NotesPage() {
                       <EditedAt iso={page.updatedAt} prefix="" />
                     </p>
                   </Link>
-                </Reveal>
+                </div>
               </li>
             ))}
           </ul>

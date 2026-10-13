@@ -15,6 +15,7 @@ export {
 } from "./components/task-meta";
 export { useTasks, type TaskActions } from "./hooks/use-tasks";
 export { KeywordChip } from "./components/keyword-chip";
+export { useShellProjects } from "./components/shell-projects";
 export { KEYWORD_LIMITS, keywordProblem, normalizeKeyword } from "./keywords";
 export { compareTasks, lastKey, placeAt, type Placement } from "./order";
 export { parseTaskInput, type Priority } from "./parse";

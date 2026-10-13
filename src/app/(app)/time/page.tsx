@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 
-import { Reveal } from "@/components/motion/reveal";
-import { RoomTransition } from "@/components/motion/room-transition";
 import { RoomHeader } from "@/components/shell/room-header";
 import { listTaskChoices } from "@/features/tasks/server/queries";
 import { DaySummary } from "@/features/time/components/day-summary";
@@ -34,27 +32,27 @@ export default async function TimePage({ searchParams }: PageProps<"/time">) {
   const todayEntries = otherToday ?? entries.filter((e) => e.date === today);
 
   return (
-    <RoomTransition>
+    <>
       <RoomHeader roomId="time" actions={<LogTime choices={choices} today={today} />} />
       <div className="grid items-start gap-4 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] md:[grid-template-areas:'timer_today'_'timer_week'_'sessions_week']">
-        <Reveal className="md:[grid-area:timer]">
+        <div className="md:[grid-area:timer]">
           <FocusTimer choices={choices} />
-        </Reveal>
-        <Reveal order={1} className="md:[grid-area:today]">
+        </div>
+        <div className="md:[grid-area:today]">
           <DaySummary entries={todayEntries} timeFormat={timeFormat} goal={dailyFocusGoal} />
-        </Reveal>
-        <Reveal order={2} className="md:[grid-area:week]">
+        </div>
+        <div className="md:[grid-area:week]">
           <WeekReport
             entries={entries}
             start={start}
             today={today}
             currentWeek={startOfWeek(today, weekStartsOn)}
           />
-        </Reveal>
-        <Reveal order={3} className="md:[grid-area:sessions]">
+        </div>
+        <div className="md:[grid-area:sessions]">
           <EntryList entries={entries} today={today} />
-        </Reveal>
+        </div>
       </div>
-    </RoomTransition>
+    </>
   );
 }

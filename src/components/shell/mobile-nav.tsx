@@ -3,17 +3,16 @@
 import { Plus } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/cn";
 import { spring } from "@/lib/motion";
 import { requestQuickCapture } from "@/lib/quick-capture";
 
 import { useSettings } from "./settings-context";
-import { isActive, shownRooms } from "./sidebar";
+import { isActive, shownRooms, useNavTarget } from "./sidebar";
 
 export function MobileNav() {
-  const pathname = usePathname();
+  const { pathname, target, navigate } = useNavTarget();
   const { hiddenRooms } = useSettings();
 
   return (
@@ -28,12 +27,13 @@ export function MobileNav() {
       </button>
       <nav className="fixed inset-x-3 bottom-3 z-40 flex items-center justify-between rounded-xl bg-surface-raised/90 p-1.5 shadow-lg backdrop-blur-md md:hidden">
         {shownRooms(hiddenRooms, pathname).map((room) => {
-          const active = isActive(room.href, pathname);
+          const active = isActive(room.href, target);
           const Icon = room.icon;
           return (
             <Link
               key={room.id}
               href={room.href}
+              onNavigate={() => navigate(room.href)}
               aria-label={room.label}
               aria-current={active ? "page" : undefined}
               className="relative flex h-11 flex-1 items-center justify-center rounded-lg"

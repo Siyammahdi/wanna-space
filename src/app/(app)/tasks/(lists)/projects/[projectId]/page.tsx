@@ -10,6 +10,7 @@ import {
   listProjects,
   listRecentlyCompleted,
 } from "@/features/tasks/server/queries";
+import { isUuid } from "@/lib/id";
 import { getUserToday } from "@/server/today";
 
 export async function generateMetadata({
@@ -24,16 +25,18 @@ export default async function ProjectPage({
   searchParams,
 }: PageProps<"/tasks/projects/[projectId]">) {
   const [{ projectId }, { task }] = await Promise.all([params, searchParams]);
-  const project = await getProject(projectId);
-  if (!project) notFound();
+  if (!isUuid(projectId)) notFound();
 
-  const scope: TaskScope = { kind: "project", id: project.id };
-  const [open, completed, projects, today] = await Promise.all([
+  // Everything in one round: the lists are space-scoped, so a stranger's id just finds nothing.
+  const scope: TaskScope = { kind: "project", id: projectId };
+  const [project, open, completed, projects, today] = await Promise.all([
+    getProject(projectId),
     listOpenTasks(scope),
     listRecentlyCompleted(scope),
     listProjects(),
     getUserToday(),
   ]);
+  if (!project) notFound();
 
   return (
     <>

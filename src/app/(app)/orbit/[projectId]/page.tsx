@@ -10,6 +10,7 @@ import {
   listProjects,
   listRecentlyCompleted,
 } from "@/features/tasks/server/queries";
+import { isUuid } from "@/lib/id";
 import { getUserToday } from "@/server/today";
 
 export async function generateMetadata({
@@ -28,16 +29,18 @@ export default async function OrbitBoardPage({
     searchParams,
     getUserToday(),
   ]);
-  const board = await getOrbitProject(projectId, today);
-  if (!board) notFound();
+  if (!isUuid(projectId)) notFound();
 
+  // One round: the task lists are space-scoped, so a stranger's id just finds nothing.
   const scope = { kind: "project", id: projectId } as const;
-  const [open, completed, inbox, projects] = await Promise.all([
+  const [board, open, completed, inbox, projects] = await Promise.all([
+    getOrbitProject(projectId, today),
     listOpenTasks(scope),
     listRecentlyCompleted(scope, 50),
     listOpenTasks({ kind: "inbox" }),
     listProjects(),
   ]);
+  if (!board) notFound();
 
   return (
     <RoomTransition>

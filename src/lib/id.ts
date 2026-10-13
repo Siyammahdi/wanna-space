@@ -1,3 +1,8 @@
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** True for a well-formed UUID: lets a route 404 a bad id before any query runs. */
+export const isUuid = (value: string) => UUID.test(value);
+
 /**
  * RFC 9562 UUIDv7 — same format Postgres 18's uuidv7() produces. Generated on the
  * client for optimistic rows so the optimistic and persisted row share one key.

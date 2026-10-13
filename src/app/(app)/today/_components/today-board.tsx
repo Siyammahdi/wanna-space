@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { startTransition, useOptimistic, useState, type ReactNode } from "react";
 
-import { Reveal } from "@/components/motion/reveal";
 import { recordUndo } from "@/components/shell/undo";
 import { Alert } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
@@ -162,16 +161,16 @@ export function TodayBoard({
 
   return (
     <div className="flex flex-col gap-8">
-      <Reveal className="flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
+      <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
         <div className="min-w-0 flex-1 basis-80">
           <Greeting name={name} />
           <Intention today={today} initial={plan.intention} />
         </div>
         <DayProgress done={done.length + rolled.length} left={left} />
-      </Reveal>
+      </div>
 
       {/* Above the next section: the picker opens over it. */}
-      <Reveal order={1} className="relative z-10">
+      <div className="relative z-10">
         <TodaysThree
           today={today}
           picks={picks}
@@ -185,11 +184,11 @@ export function TodayBoard({
           onOpen={nav.open}
           onFocus={focusOn}
         />
-      </Reveal>
+      </div>
 
       {/* One three-column grid for the whole page: every band lines up with the three slots. */}
       <div className="flex flex-col gap-4">
-        <Reveal order={2} className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-4 lg:grid-cols-3">
           <div className="flex min-w-0 flex-col gap-4 lg:col-span-2">
             <QuickAdd
               today={today}
@@ -322,11 +321,9 @@ export function TodayBoard({
               className="flex-1"
             />
           </div>
-        </Reveal>
+        </div>
 
-        <Reveal order={3} className="grid gap-4 md:grid-cols-3">
-          {rooms}
-        </Reveal>
+        <div className="grid gap-4 md:grid-cols-3">{rooms}</div>
       </div>
 
       <AnimatePresence>

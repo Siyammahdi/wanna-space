@@ -30,8 +30,12 @@ src/
 │   ├── (auth)/               sign-in, sign-up, forgot/reset-password, verify-email; split-screen layout
 │   ├── (app)/                The signed-in space; layout = requireUser() + app shell
 │   │   ├── _actions/search.ts  searchSpace: the palette's search over every room (ADR 0020)
-│   │   ├── today/            One folder per room; private `_components/` for page-only UI
+│   │   ├── today/            One folder per room; private `_components/` for page-only UI.
+│   │   │                     Each room: a data-free layout.tsx (RoomTransition) and a
+│   │   │                     loading.tsx skeleton (ADR 0021)
 │   │   ├── tasks/ orbit/ planner/ notes/ time/ vault/
+│   │   │   (tasks/(lists)/ and notes/(tree)/ hold the layouts that load data: the
+│   │   │   project nav and the page tree sit below the room's loading boundary)
 │   ├── start/                Route handler: redirect to the user's start room (ADR 0015)
 │   ├── api/auth/[...all]/    Better Auth route handler
 │   ├── api/export/           JSON download of the user's space (ADR 0010)
@@ -41,11 +45,12 @@ src/
 │   └── globals.css           Tailwind + token → theme mapping, view transitions
 ├── components/               Shared, feature-agnostic UI
 │   ├── ui/                   Primitives (Button, Badge, Card, Kbd, Popover, Switch,
-│   │                         EmojiPicker …)
-│   ├── shell/                App chrome (Sidebar, MobileNav, RoomHeader, UndoShortcut,
+│   │                         EmojiPicker, Skeleton …)
+│   ├── shell/                App chrome (Sidebar, MobileNav, RoomHeader, RoomLoading, UndoShortcut,
 │   │                         CommandPalette — feature results arrive as props,
 │   │                         SettingsProvider / useSettings, CapabilitiesProvider /
-│   │                         useCapabilities for server feature flags)
+│   │                         useCapabilities for server feature flags, ViewerProvider /
+│   │                         useViewer: name and today, for loading states)
 │   ├── motion/               Motion wrappers (Reveal, RoomTransition)
 │   ├── theme/                Theme switcher, MotionPreference (reduce-motion setting), LightOnly
 │   └── brand/                Logo
@@ -174,6 +179,13 @@ app/  →  features/  →  components/  →  lib/, config/, styles/
   Authorization is never left to `proxy.ts` — the proxy only does optimistic redirects.
 - **Writes** are Server Actions in `features/<x>/server/actions.ts`: validate with zod →
   authorize via the DAL → write with Drizzle → `updateTag()`/`refresh()` for read-your-writes.
+- **Navigation** is instant (ADR 0021): every room has a `loading.tsx`, which Next prefetches
+  with the link, so a click lands on the room's skeleton while its data streams in.
+  Anything above a loading boundary is prefetched and reused, so it holds no data. Queries
+  in a page run in one `Promise.all` round wherever they don't depend on each other.
+  Skeletons live beside the components they mirror (`features/*/components/*-skeleton.tsx`)
+  and draw what the client already knows for real: the viewer (`useViewer`), settings,
+  the shell's projects (`useShellProjects`, from the app layout), the notes tree.
 - **Client state** is local and short-lived (`useOptimistic`, `useState`). No global client
   store until a real need appears.
 

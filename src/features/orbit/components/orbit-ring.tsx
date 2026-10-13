@@ -2,6 +2,42 @@ import type { CSSProperties, ReactNode } from "react";
 
 import { cn } from "@/lib/cn";
 
+/** The ring's empty track at OrbitRing's exact geometry, for loading states. */
+export function OrbitRingSkeleton({
+  size = 64,
+  stroke = 4,
+  children,
+  className,
+}: {
+  size?: number;
+  stroke?: number;
+  children?: ReactNode;
+  className?: string;
+}) {
+  const r = (size - stroke * 1.35 * 2) / 2;
+  return (
+    <div
+      aria-hidden
+      className={cn("relative shrink-0", className)}
+      style={{ width: size, height: size }}
+    >
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="animate-pulse">
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          strokeWidth={stroke}
+          className="stroke-surface-sunken"
+        />
+      </svg>
+      {children && (
+        <div className="absolute inset-0 flex items-center justify-center">{children}</div>
+      )}
+    </div>
+  );
+}
+
 /**
  * Progress as an orbit: the arc is the path travelled, the planet sits at its tip.
  * Both sweep in with CSS on first paint (no JavaScript needed).

@@ -74,7 +74,34 @@ Three layers (ADR 0003):
    - `spring.gentle`: panels, sheets, layout shifts
    - `spring.bouncy`: moments of delight (complete, save, "check your inbox")
    - `spring.glide`: shared-layout highlights (active nav, tabs, segmented controls)
-3. **View transitions**: room content rises in, the shell stays still.
+3. **View transitions**: room content rises in (`--duration-base`, kept short because React
+   holds streamed-in content until it ends), the shell stays still.
+
+### Loading states
+
+A click never waits on the network (ADR 0021). Each room's `loading.tsx` draws its
+skeleton inside `<RoomLoading>` (announces "Loading…", marks `data-skeleton`). The bar is
+pixel-for-pixel: when data lands, nothing moves; values just fill in.
+
+- **Built from the real markup.** Each feature owns its skeleton next to the components it
+  mirrors (`features/*/components/*-skeleton.tsx`) and copies their exact classes: same
+  grid, card padding, row height, line box.
+- **Everything known is real.** Room headers, section titles ("Today’s three", "Focus",
+  "Recently edited"), buttons, placeholders, nav pills and links render as themselves.
+  So does anything already on the client: the greeting and today (`useViewer`), the
+  settings (the week, hour labels, goal bar), the running focus timer, the shell's
+  projects with their counts (`useShellProjects`: the Tasks nav, a project's header,
+  Orbit's cards and board title), and the notes tree (a page's breadcrumb, icon and
+  title).
+- **Only data is placeholder.** `SkeletonLine` centres a `Skeleton` bar in the text's real
+  line height (`h-[1lh]`, `h-6` …); `SkeletonText` sits inside the real text element so
+  the line box is unchanged. `OrbitRingSkeleton` is the ring's empty track. Bars use
+  `bg-surface-hover/70` with `animate-pulse`, readable on every surface tone.
+- **No second entrance.** The room enters once (its view transition); content swapped in
+  for a skeleton doesn't `<Reveal>` again, or it would flash and slide.
+- `html { scrollbar-gutter: stable }`: a short skeleton and a long page keep the same
+  width. Wide rooms pass `wide` so the page keeps its width.
+- The nav highlight moves on click (`useNavTarget`), before the URL changes.
 
 Rules: exits are faster than entrances. Never animate on first paint with JS. Respect
 `prefers-reduced-motion` and the in-app Reduce motion setting (both handled globally). One
@@ -153,8 +180,8 @@ cycle; `--key-index` / `--key-count`). Brand colors (`fern`, `sage`, `mint`, `cr
 ### Today
 
 `app/(app)/today/_components/today-board.tsx` (ADR
-[0018](../architecture/decisions/0018-today-room.md)). Three bands enter in sequence with
-`<Reveal>`:
+[0018](../architecture/decisions/0018-today-room.md)). Three bands, under the room's own
+entrance (no `<Reveal>`: they replace the loading skeleton in place):
 
 1. **Header.** The greeting (`font-heading` 40/46px, `accent` full stop) with the
    intention line under it: a `Sparkle` in `accent` that turns a quarter on focus, and a

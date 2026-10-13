@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { RoomTransition } from "@/components/motion/room-transition";
 import { RoomHeader } from "@/components/shell/room-header";
 import { WeekBoard } from "@/features/planner/components/week-board";
 import { WeekNav } from "@/features/planner/components/week-nav";
@@ -25,19 +24,17 @@ export default async function PlannerPage({ searchParams }: PageProps<"/planner"
   ]);
 
   return (
-    <RoomTransition>
-      {/* Opts out of the app's reading width: a week needs the room. */}
-      <div data-wide>
-        <RoomHeader roomId="planner" />
-        <WeekBoard
-          key={start}
-          tasks={tasks}
-          today={today}
-          weekStart={start}
-          projects={projects}
-          nav={<WeekNav start={start} today={today} weekStartsOn={weekStartsOn} />}
-        />
-      </div>
-    </RoomTransition>
+    // Opts out of the app's reading width: a week needs the room.
+    <div data-wide>
+      <RoomHeader roomId="planner" />
+      <WeekBoard
+        key={start}
+        tasks={tasks}
+        today={today}
+        weekStart={start}
+        projects={projects}
+        nav={<WeekNav start={start} today={today} weekStartsOn={weekStartsOn} />}
+      />
+    </div>
   );
 }

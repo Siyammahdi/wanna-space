@@ -138,6 +138,8 @@
     color: var(--ink);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
+    /* A short skeleton and a long page keep the same width: nothing re-centres when data lands. */
+    scrollbar-gutter: stable;
   }
 
   ::selection {
@@ -194,8 +196,9 @@
   animation: var(--duration-fast) var(--motion-ease-out) both vt-fade-out;
 }
 
+/* Kept short: React holds the room's streamed-in content until this finishes. */
 ::view-transition-new(.room-enter) {
-  animation: var(--duration-slow) var(--motion-ease-out) both vt-rise-in;
+  animation: var(--duration-base) var(--motion-ease-out) both vt-rise-in;
 }
 
 @keyframes vt-fade-out {

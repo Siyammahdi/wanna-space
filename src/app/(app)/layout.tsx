@@ -10,10 +10,12 @@ import { SettingsProvider } from "@/components/shell/settings-context";
 import { Sidebar } from "@/components/shell/sidebar";
 import { UndoShortcut } from "@/components/shell/undo";
 import { UserMenu } from "@/components/shell/user-menu";
+import { ViewerProvider } from "@/components/shell/viewer";
 import { Toaster } from "@/components/ui/toast";
 import { newPage } from "@/features/notes/server/actions";
 import { SettingsDialog } from "@/features/settings/components/settings-dialog";
 import { QuickCaptureDialog } from "@/features/tasks/components/quick-capture-dialog";
+import { ShellProjectsProvider } from "@/features/tasks/components/shell-projects";
 import { colorOf } from "@/features/tasks/projects";
 import { listProjects } from "@/features/tasks/server/queries";
 import { TimerPill } from "@/features/time/components/timer-pill";
@@ -58,34 +60,36 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
 
   return (
     <CapabilitiesProvider value={{ uploads: features.uploads }}>
-      <SettingsProvider initial={settings}>
-        <TimerProvider initial={timer} serverNow={serverNow}>
-          <div className="flex min-h-dvh">
-            <Sidebar account={<UserMenu user={user} />} timer={<TimerPill />} />
-            <main data-split-shell className="min-w-0 flex-1">
-              <header className="flex items-center justify-between gap-3 px-5 pt-4 md:hidden">
-                <Link href="/start" className="shrink-0">
-                  <Logo />
-                </Link>
-                <div className="flex items-center gap-1">
-                  <TimerPill compact />
-                  <SearchButton />
-                  <UserMenu user={user} compact />
+      <ViewerProvider value={{ name: user.name, today }}>
+        <SettingsProvider initial={settings}>
+          <TimerProvider initial={timer} serverNow={serverNow}>
+            <div className="flex min-h-dvh">
+              <Sidebar account={<UserMenu user={user} />} timer={<TimerPill />} />
+              <main data-split-shell className="min-w-0 flex-1">
+                <header className="flex items-center justify-between gap-3 px-5 pt-4 md:hidden">
+                  <Link href="/start" className="shrink-0">
+                    <Logo />
+                  </Link>
+                  <div className="flex items-center gap-1">
+                    <TimerPill compact />
+                    <SearchButton />
+                    <UserMenu user={user} compact />
+                  </div>
+                </header>
+                <div className="mx-auto w-full max-w-5xl px-5 pt-8 pb-28 has-[[data-wide]]:max-w-[110rem] md:px-10 md:pt-14 md:pb-16">
+                  <ShellProjectsProvider projects={projects}>{children}</ShellProjectsProvider>
                 </div>
-              </header>
-              <div className="mx-auto w-full max-w-5xl px-5 pt-8 pb-28 has-[[data-wide]]:max-w-[110rem] md:px-10 md:pt-14 md:pb-16">
-                {children}
-              </div>
-            </main>
-            <MobileNav />
-            <QuickCaptureDialog today={today} projects={projects} />
-            <CommandPalette places={places} search={searchSpace} newPage={newPage} />
-            <SettingsDialog user={user} projects={projects} />
-            <UndoShortcut />
-            <Toaster />
-          </div>
-        </TimerProvider>
-      </SettingsProvider>
+              </main>
+              <MobileNav />
+              <QuickCaptureDialog today={today} projects={projects} />
+              <CommandPalette places={places} search={searchSpace} newPage={newPage} />
+              <SettingsDialog user={user} projects={projects} />
+              <UndoShortcut />
+              <Toaster />
+            </div>
+          </TimerProvider>
+        </SettingsProvider>
+      </ViewerProvider>
     </CapabilitiesProvider>
   );
 }

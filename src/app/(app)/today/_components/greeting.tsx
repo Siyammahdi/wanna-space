@@ -2,6 +2,8 @@
 
 import { useSyncExternalStore } from "react";
 
+import { useViewer } from "@/components/shell/viewer";
+
 function subscribe(onChange: () => void) {
   const id = window.setInterval(onChange, 60_000);
   return () => window.clearInterval(id);
@@ -24,6 +26,11 @@ function getSnapshot() {
     day: "numeric",
   });
   return `${part}|${date}`;
+}
+
+/** The greeting before the page's data arrives: the name comes from the app shell. */
+export function ViewerGreeting() {
+  return <Greeting name={useViewer().name} />;
 }
 
 /** Rendered from the user's clock, so it is client-only; the server sends a neutral fallback. */
